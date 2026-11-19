@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de tarefas</title>
+    <style>
+      body {
+        max-width: 640px;
+        margin: 48px auto;
+        padding: 0 20px;
+        color: #202124;
+        font-family: system-ui, sans-serif;
+      }
+
+      li {
+        margin: 12px 0;
+      }
+
+      .concluida {
+        color: #58705c;
+      }
+
+      #mensagem {
+        color: #5f6368;
+      }
+
+      #mensagem.erro {
+        color: #b3261e;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Minhas tarefas</h1>
+      <p id="mensagem" role="status">Carregando tarefas...</p>
+      <ul id="lista-tarefas"></ul>
+    </main>
+
+    <script>
+      const lista = document.querySelector("#lista-tarefas");
+      const mensagem = document.querySelector("#mensagem");
+
+      async function carregarTarefas() {
+        try {
+          const resposta = await fetch("/api/tarefas");
+          if (!resposta.ok) {
+            throw new Error(`A API respondeu com o status ${resposta.status}.`);
+          }
+
+          const tarefas = await resposta.json();
+          for (const tarefa of tarefas) {
+            const item = document.createElement("li");
+            item.textContent = `${tarefa.titulo} — ${tarefa.concluida ? "Concluída" : "Pendente"}`;
+            if (tarefa.concluida) {
+              item.classList.add("concluida");
+            }
+            lista.append(item);
+          }
+
+          mensagem.textContent = tarefas.length
+            ? `${tarefas.length} tarefa(s) carregada(s) da API.`
+            : "Nenhuma tarefa encontrada.";
+        } catch (erro) {
+          mensagem.textContent = `Não foi possível carregar as tarefas: ${erro.message}`;
+          mensagem.classList.add("erro");
+        }
+      }
+
+      carregarTarefas();
+    </script>
+  </body>
+</html>
