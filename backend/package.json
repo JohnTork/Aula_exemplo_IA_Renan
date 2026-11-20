@@ -1,0 +1,23 @@
+{
+  "name": "minha-agenda-inteligente-api",
+  "version": "1.0.0",
+  "description": "API REST do projeto Minha Agenda Inteligente",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pg": "^8.23.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^5.1.7"
+  }
+}
